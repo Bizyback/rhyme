@@ -1,7 +1,8 @@
 package ui
 
 import org.koin.dsl.module
-import ui.screens.home.HomeScreenModel
+import ui.screens.titles.TitlesScreenModel
+import ui.screens.title.TitleScreenModel
 
 /**
  * project : rhyme
@@ -10,5 +11,6 @@ import ui.screens.home.HomeScreenModel
  * email   : mambobryan@gmail.com
  */
 val uiModule = module {
-    factory { HomeScreenModel(repository = get()) }
+    factory { TitlesScreenModel(repository = get()) }
+    factory { TitleScreenModel(repository = get()) }
 }

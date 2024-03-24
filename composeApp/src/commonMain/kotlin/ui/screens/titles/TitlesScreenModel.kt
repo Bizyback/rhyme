@@ -1,4 +1,4 @@
-package ui.screens.home
+package ui.screens.titles
 
 import cafe.adriel.voyager.core.model.screenModelScope
 import data.domain.TitleDomain
@@ -14,13 +14,13 @@ import ui.helpers.StatefulScreenModel
  * user    : mambo
  * email   : mambobryan@gmail.com
  */
-data class HomeScreenState(
+data class TitlesScreenState(
     val titles: FetchItemState<List<TitleDomain>> = FetchItemState.Loading
 )
 
-class HomeScreenModel(
+class TitlesScreenModel(
     val repository: TitlesRepository
-) : StatefulScreenModel<HomeScreenState>(HomeScreenState()) {
+) : StatefulScreenModel<TitlesScreenState>(TitlesScreenState()) {
 
     init {
         getCurrentTitles()
@@ -29,8 +29,7 @@ class HomeScreenModel(
     private fun getCurrentTitles() {
         update { copy(titles = FetchItemState.Loading) }
         screenModelScope.launch {
-            val result = repository.getTitles()
-            val value = when (result) {
+            val value = when (val result = repository.getTitles()) {
                 is DataResult.Error -> FetchItemState.Error(message = result.message)
                 is DataResult.Success -> FetchItemState.Success(data = result.data)
             }

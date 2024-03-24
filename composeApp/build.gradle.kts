@@ -36,8 +36,9 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material)
             implementation(compose.ui)
+            implementation(compose.material3)
+
             // ktor
             implementation(libs.bundles.ktor)
             // kotlinx datetime
@@ -50,6 +51,8 @@ kotlin {
             implementation(libs.koin.core)
             // kamel
             implementation(libs.kamel.image)
+            // haze
+            implementation(libs.haze)
         }
 
         commonTest.dependencies {

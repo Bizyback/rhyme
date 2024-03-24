@@ -1,13 +1,15 @@
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import ui.app.initKoin
 import ui.navigation.MainNavigation
 
 @Composable
 fun App() {
     initKoin()
-    MaterialTheme {
+    MaterialTheme(
+        colorScheme = ui.theme.lightColorScheme
+    ) {
         MainNavigation()
     }
 }

@@ -1,6 +1,5 @@
 package data.repositories.titles
 
-import data.domain.AuthorDomain
 import data.domain.PoemDomain
 import data.domain.TitleDomain
 import data.domain.toDomain
@@ -17,6 +16,14 @@ import sources.remotesource.source.titles.TitlesRemoteSource
 class TitlesRepositoryImpl(
     private val remote: TitlesRemoteSource
 ) : TitlesRepository {
+
+    override suspend fun getTitle(header: String): DataResult<PoemDomain> {
+        return when (val result = remote.fetchTitle(header = header)) {
+            is NetworkResult.Error -> DataResult.Error(message = result.message)
+            is NetworkResult.Success ->
+                DataResult.Success(data = result.data.first().toDomain())
+        }
+    }
 
     override suspend fun getTitles(): DataResult<List<TitleDomain>> {
         return when (val result = remote.fetchTitles()) {

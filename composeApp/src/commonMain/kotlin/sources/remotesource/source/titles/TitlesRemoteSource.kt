@@ -14,6 +14,8 @@ interface TitlesRemoteSource {
 
     suspend fun fetchTitles(): NetworkResult<TitlesListDTO>
 
+    suspend fun fetchTitle(header: String): NetworkResult<List<PoemDTO>>
+
     suspend fun fetchRandomTitles(count: Int): NetworkResult<List<PoemDTO>>
 
 }

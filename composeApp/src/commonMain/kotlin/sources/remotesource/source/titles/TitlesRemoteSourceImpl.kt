@@ -16,6 +16,11 @@ import sources.remotesource.helpers.safeApiCall
  */
 class TitlesRemoteSourceImpl(private val client: HttpClient) : TitlesRemoteSource {
 
+    override suspend fun fetchTitle(header: String): NetworkResult<List<PoemDTO>> =
+        safeApiCall(error = "") {
+            client.get(urlString = Endpoint.Titles.Title(header = header).url)
+        }
+
     override suspend fun fetchTitles(): NetworkResult<TitlesListDTO> =
         safeApiCall(error = "") {
             client.get(urlString = Endpoint.Titles.url)

@@ -1,9 +1,8 @@
 package ui.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.navigator.Navigator
-import ui.screens.home.HomeScreen
+import ui.screens.titles.TitlesScreen
 
 /**
  * project : rhyme
@@ -13,5 +12,5 @@ import ui.screens.home.HomeScreen
  */
 @Composable
 fun MainNavigation() {
-    Navigator(HomeScreen)
+    Navigator(TitlesScreen)
 }

@@ -12,6 +12,8 @@ import data.helpers.DataResult
  */
 interface TitlesRepository {
 
+    suspend fun getTitle(header: String): DataResult<PoemDomain>
+
     suspend fun getTitles(): DataResult<List<TitleDomain>>
 
     suspend fun getRandomTitle(): DataResult<PoemDomain>
