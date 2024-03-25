@@ -171,7 +171,7 @@ fun TitleScreenContent(
                     ) {
                         Text(
                             modifier = Modifier.padding(horizontal = 16.dp)
-                                .padding(top = 148.dp, bottom = 16.dp),
+                                .padding(top = 140.dp, bottom = 16.dp),
                             text = "By ${poem.author}",
                             fontSize = TextUnit(16f, TextUnitType.Sp),
                             fontWeight = FontWeight.Bold,

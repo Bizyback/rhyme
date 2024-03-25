@@ -67,6 +67,10 @@ kotlin {
         }
 
         androidMain.dependencies {
+            // material theme
+            implementation (libs.androidx.material)
+            // splash screen
+            implementation(libs.androidx.splash.screen)
             // compose
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
