@@ -1,5 +1,6 @@
 package ui.screens.titles
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,15 +14,19 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Explore
+import androidx.compose.material.icons.rounded.GeneratingTokens
 import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -62,7 +67,8 @@ object TitlesScreen : Screen {
             onClickRetryTitles = screenModel::onClickRetryClicked,
             onClickTitle = { header, pastel ->
                 navigator?.push(TitleScreen(header = header, color = pastel))
-            }
+            },
+            onClickGetRandomTitle = screenModel::onClickGetRandomTitle
         )
     }
 }
@@ -73,11 +79,17 @@ fun TitlesScreenContent(
     state: TitlesScreenState,
     onClickRetryTitles: () -> Unit,
     onClickTitle: (String, Int) -> Unit,
+    onClickGetRandomTitle: () -> Unit
 ) {
+
+    LaunchedEffect(state.title) {
+        if (state.title != null) onClickTitle(state.title.first, state.title.second)
+    }
 
     val hazeState = remember { HazeState() }
 
     Box(modifier = Modifier.fillMaxSize()) {
+
         MediumTopAppBar(
             title = { Text(text = "rhyme", fontWeight = FontWeight.Bold) },
             colors = TopAppBarDefaults.largeTopAppBarColors(Color.Transparent),
@@ -190,6 +202,19 @@ fun TitlesScreenContent(
                         }
                     }
                 }
+            }
+        }
+
+        AnimatedVisibility(
+            modifier = Modifier.padding(16.dp).align(Alignment.BottomEnd),
+            visible = state.titles is FetchItemState.Success
+        ) {
+            FloatingActionButton(
+                onClick = onClickGetRandomTitle,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            ) {
+                Icon(imageVector = Icons.Rounded.Explore, contentDescription = "randomize")
             }
         }
     }

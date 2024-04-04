@@ -12,8 +12,10 @@ import androidx.compose.ui.graphics.Color
 val lightColorScheme = lightColorScheme(
     background = Color(0xFFF5F5F5),
     surface = Color(0xFFFFFFFF),
-    primary = Color(0xFF38f9d7),
-    onPrimary = Color(0xFF000000)
+    primary = Color(0xFF000000),
+    onPrimary = Color(0xFFFFFFFF),
+    secondary = Color(0xFF000000),
+    onSecondary = Color(0xFFFFFFFF),
 )
 
 fun getRandomPastelColor(): Color {

@@ -38,6 +38,7 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.ui)
             implementation(compose.material3)
+            implementation(compose.materialIconsExtended)
 
             // ktor
             implementation(libs.bundles.ktor)
