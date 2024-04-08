@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Explore
-import androidx.compose.material.icons.rounded.GeneratingTokens
 import androidx.compose.material.icons.rounded.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,6 +22,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
+import data.domain.TitleDomain
 import dev.chrisbanes.haze.HazeDefaults
 import dev.chrisbanes.haze.HazeState
 import dev.chrisbanes.haze.haze
@@ -88,135 +89,151 @@ fun TitlesScreenContent(
 
     val hazeState = remember { HazeState() }
 
-    Box(modifier = Modifier.fillMaxSize()) {
-
-        MediumTopAppBar(
-            title = { Text(text = "rhyme", fontWeight = FontWeight.Bold) },
-            colors = TopAppBarDefaults.largeTopAppBarColors(Color.Transparent),
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .hazeChild(
-                    state = hazeState,
-                    style = HazeDefaults.style(
-                        tint = Color.White.copy(alpha = 0.15f),
-                        blurRadius = 12.dp,
-                        noiseFactor = 0.1f,
-                    ),
-                )
-                .fillMaxWidth(),
-        )
-        Column(modifier = Modifier.padding().fillMaxSize()) {
-            when (val result = state.titles) {
-                is FetchItemState.Error -> {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            modifier = Modifier.padding(24.dp),
-                            imageVector = Icons.Rounded.Warning,
-                            contentDescription = ""
-                        )
-                        Text(text = "Error")
-                        Text(modifier = Modifier.padding(vertical = 8.dp), text = "Error")
-                        Button(onClick = onClickRetryTitles) {
-                            Text(text = "retry")
-                        }
-                    }
-                }
-
-                FetchItemState.Loading -> {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                    ) {
-                        LazyVerticalGrid(
-                            modifier = Modifier.padding(top = 100.dp),
-                            columns = GridCells.Fixed(2)
-                        ) {
-                            items(5) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(8.dp)
-                                        .clip(RoundedCornerShape(5))
-                                        .height(200.dp)
-                                        .shimmer(
-                                            durationMillis = 1500,
-                                            colors = listOf(
-                                                Color.Gray.copy(alpha = 0.1f),
-                                                Color.Gray.copy(alpha = 0.2f),
-                                                Color.Gray.copy(alpha = 0.3f)
-                                            )
-                                        )
-                                        .haze(
-                                            state = hazeState,
-                                            style = HazeDefaults.style(backgroundColor = MaterialTheme.colorScheme.surface),
-                                        )
-
-                                )
-                            }
-                        }
-                    }
-                }
-
-                is FetchItemState.Success -> {
-                    val list = result.data
-                    val chunked = list.chunked(2)
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .haze(
-                                state = hazeState,
-                                style = HazeDefaults.style(backgroundColor = MaterialTheme.colorScheme.surface),
-                            ),
-                    ) {
-                        items(list.size) { index ->
-                            val title = list[index]
-                            val isFirstRow = chunked.first().contains(title)
-                            val isLastRow = chunked.last().contains(title)
-                            val pastel = getRandomPastelColor().copy(alpha = 0.4f)
-                            Column(
-                                modifier = Modifier
-                                    .padding(top = if (isFirstRow) 100.dp else 0.dp)
-                                    .padding(bottom = if (isLastRow) 64.dp else 0.dp)
-                                    .padding(8.dp)
-                                    .clip(RoundedCornerShape(5))
-                                    .background(pastel)
-                                    .fillMaxWidth()
-                                    .height(200.dp)
-                                    .clickable { onClickTitle(title.header, pastel.toArgb()) }
-                            ) {
-                                Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-                                    Text(
-                                        modifier = Modifier
-                                            .align(Alignment.BottomStart)
-                                            .fillMaxWidth(),
-                                        text = title.header.trim(),
-                                        maxLines = 2,
-                                        overflow = TextOverflow.Ellipsis
-                                    )
-                                }
-                            }
-                        }
-                    }
+    Scaffold(
+        topBar = {
+            MediumTopAppBar(
+                title = { Text(text = "rhyme", fontWeight = FontWeight.Bold) },
+                colors = TopAppBarDefaults.largeTopAppBarColors(Color.Transparent),
+                modifier = Modifier
+                    .hazeChild(
+                        state = hazeState,
+                        style = HazeDefaults.style(
+                            tint = Color.White.copy(alpha = 0.15f),
+                            blurRadius = 12.dp,
+                            noiseFactor = 0.1f,
+                        ),
+                    )
+                    .fillMaxWidth(),
+            )
+        },
+        floatingActionButton = {
+            AnimatedVisibility(
+                visible = state.titles is FetchItemState.Success
+            ) {
+                FloatingActionButton(
+                    onClick = onClickGetRandomTitle,
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                ) {
+                    Icon(imageVector = Icons.Rounded.Explore, contentDescription = "randomize")
                 }
             }
         }
 
-        AnimatedVisibility(
-            modifier = Modifier.padding(16.dp).align(Alignment.BottomEnd),
-            visible = state.titles is FetchItemState.Success
-        ) {
-            FloatingActionButton(
-                onClick = onClickGetRandomTitle,
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
-            ) {
-                Icon(imageVector = Icons.Rounded.Explore, contentDescription = "randomize")
+    ) {
+        Column(modifier = Modifier.padding(top = 40.dp).fillMaxSize()) {
+            when (val result = state.titles) {
+                is FetchItemState.Error -> {
+                    ErrorContent(onClickRetryTitles = onClickRetryTitles)
+                }
+
+                FetchItemState.Loading -> {
+                    LoadingContent(hazeState = hazeState)
+                }
+
+                is FetchItemState.Success -> {
+                    SuccessContent(result.data, onClickTitle = onClickTitle, hazeState = hazeState)
+                }
             }
         }
     }
 
+}
+
+@Composable
+private fun SuccessContent(
+    data: List<TitleDomain>,
+    onClickTitle: (String, Int) -> Unit,
+    hazeState: HazeState
+) {
+    val chunked = data.chunked(2)
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        modifier = Modifier
+            .fillMaxSize()
+            .haze(
+                state = hazeState,
+                style = HazeDefaults.style(backgroundColor = MaterialTheme.colorScheme.surface),
+            ),
+
+        ) {
+        items(data.size) { index ->
+            val title = data[index]
+            val isFirstRow = chunked.first().contains(title)
+            val isLastRow = chunked.last().contains(title)
+            val pastel = getRandomPastelColor().copy(alpha = 0.4f)
+            Column(
+                modifier = Modifier
+                    .padding(top = if (isFirstRow) 100.dp else 0.dp)
+                    .padding(bottom = if (isLastRow) 64.dp else 0.dp)
+                    .padding(8.dp)
+                    .clip(RoundedCornerShape(5))
+                    .background(pastel)
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .clickable { onClickTitle(title.header, pastel.toArgb()) }
+            ) {
+                Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+                    Text(
+                        modifier = Modifier
+                            .align(Alignment.BottomStart)
+                            .fillMaxWidth(),
+                        text = title.header.trim(),
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ErrorContent(onClickRetryTitles: () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            modifier = Modifier.padding(24.dp),
+            imageVector = Icons.Rounded.Warning,
+            contentDescription = ""
+        )
+        Text(text = "Error")
+        Text(modifier = Modifier.padding(vertical = 8.dp), text = "Error")
+        Button(onClick = onClickRetryTitles) {
+            Text(text = "retry")
+        }
+    }
+}
+
+@Composable
+private fun LoadingContent(hazeState: HazeState) {
+    LazyVerticalGrid(
+        modifier = Modifier.padding(top = 100.dp),
+        columns = GridCells.Fixed(2)
+    ) {
+        items(5) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .clip(RoundedCornerShape(5))
+                    .height(200.dp)
+                    .shimmer(
+                        durationMillis = 1500,
+                        colors = listOf(
+                            Color.Gray.copy(alpha = 0.1f),
+                            Color.Gray.copy(alpha = 0.2f),
+                            Color.Gray.copy(alpha = 0.3f)
+                        )
+                    )
+                    .haze(
+                        state = hazeState,
+                        style = HazeDefaults.style(backgroundColor = MaterialTheme.colorScheme.surface),
+                    )
+            )
+        }
+    }
 }
