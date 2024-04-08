@@ -1,10 +1,10 @@
-<p align="center"><img width=100% src="/.github/images/banner/rhyme.png" alt="Rhyme"></p>
+<p align="center"><img width=100% src="/images/github_banner.png" alt="Rhyme"></p>
 
 # Rhyme
 
-[![Releases](https://img.shields.io/github/release/bizyback/rhyme.svg?style=for-the-badge&color=orange)](https://github.com/bizyback/rhyme/releases)
-[![Kotlin](https://img.shields.io/github/languages/top/bizyback/rhyme.svg?style=for-the-badge&color=orange)](https://kotlinlang.org/)
-[![License](https://img.shields.io/github/license/bizyback/rhyme.svg?style=for-the-badge&color=orange)](https://github.com/bizyback/rhyme/blob/main/LICENSE)
+[![Releases](https://img.shields.io/github/release/bizyback/rhyme.svg?style=for-the-badge&color=purple)](https://github.com/bizyback/rhyme/releases)
+[![Kotlin](https://img.shields.io/github/languages/top/bizyback/rhyme.svg?style=for-the-badge&color=purple)](https://kotlinlang.org/)
+[![License](https://img.shields.io/github/license/bizyback/rhyme.svg?style=for-the-badge&color=purple)](https://github.com/bizyback/rhyme/blob/main/LICENSE)
 
 Rhyme is a multiplatform poetry reader app built using Kotlin and Compose Multiplatform. It features
 a simple & minimal user interface and experience to browse through a variety of poems
