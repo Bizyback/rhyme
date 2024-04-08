@@ -2,7 +2,7 @@
 
 # Rhyme
 
-[![Releases](https://img.shields.io/github/release/bizyback/rhyme.svg?style=for-the-badge&color=purple)](https://github.com/bizyback/rhyme/releases)
+[![Releases](https://img.shields.io/github/release/bizyback/rhyme.svg?style=for-the-badge-7F52FF)](https://github.com/bizyback/rhyme/releases)
 [![Kotlin](https://img.shields.io/github/languages/top/bizyback/rhyme.svg?style=for-the-badge&color=purple)](https://kotlinlang.org/)
 [![License](https://img.shields.io/github/license/bizyback/rhyme.svg?style=for-the-badge&color=purple)](https://github.com/bizyback/rhyme/blob/main/LICENSE)
 
