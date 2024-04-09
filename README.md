@@ -29,11 +29,13 @@ a simple & minimal user interface and experience to browse through a variety of 
 
 For full list of dependencies used, please take a look at the [catalog](/gradle/libs.versions.toml) file.
 
-## ⭐️Contributions
+## 🤩 Contributions
+
 Appreciate the project? Here's how you can help:
-- Star        : Give it a star at the top right. It means a lot!
-- Contribute  : Found an issue or have a feature idea? Submit a PR.
-- Feedback    : Have suggestions? Open an issue or start a discussion.
+
+- 🌟 Star        : Give it a star at the top right. It means a lot!
+- 😎 Contribute  : Found an issue or have a feature idea? Submit a PR.
+- 💬 Feedback    : Have suggestions? Open an issue or start a discussion.
 
 ## 🐝 Made by Bizy-Bees
 - [Mambo](https://github.com/MamboBryan)
